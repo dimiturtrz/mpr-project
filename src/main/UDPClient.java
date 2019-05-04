@@ -24,7 +24,7 @@ public class UDPClient {
 	public static void main(String[] args) throws IOException {
 		
 		UDPClient c = new UDPClient();
-		c.sendFile("video1.mp4");
+		c.sendFile("logs_BCS37_20181103_UTF8.txt");
 	}
 	
 	public void sendFile(String filename) throws FileNotFoundException, IOException {

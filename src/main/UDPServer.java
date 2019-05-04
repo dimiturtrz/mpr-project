@@ -34,7 +34,7 @@ public class UDPServer {
 	}
 	
 	public void listen() throws IOException {
-		receiveFile("video.mp4");
+		receiveFile("logs.txt");
 	}
 	
 	public void receiveFile(String filename) throws IOException {
