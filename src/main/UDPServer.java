@@ -7,6 +7,8 @@ import java.io.OutputStream;
 import java.net.*;
 import java.nio.ByteBuffer;
 
+import topK.TopKAnalyzer;
+
 public class UDPServer {
 	
 	private DatagramSocket server;
@@ -69,6 +71,12 @@ public class UDPServer {
 			
 			fileOut.flush();
 			System.out.println("Total bytes received: " + totalBytesReceived + ". File path is: " + f.getAbsolutePath());
+			
+			String result = TopKAnalyzer.analyze(filename);
+			byte [] buf = result.getBytes();
+			DatagramPacket packet = new DatagramPacket(buf, buf.length, p.getAddress(), p.getPort());
+			server.send(packet);
+			
 		}
 	}
 	
