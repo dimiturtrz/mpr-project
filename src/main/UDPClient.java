@@ -65,7 +65,7 @@ public class UDPClient {
 	}
 	
 	public void listen() throws IOException {
-		byte[] buf = new byte[256];
+		byte[] buf = new byte[MAX_BUFFER_SIZE*2];
 	
 		while(true) {            
 			DatagramPacket packet = new DatagramPacket(buf, buf.length);
