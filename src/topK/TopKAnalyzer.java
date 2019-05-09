@@ -89,12 +89,10 @@ public class TopKAnalyzer {
 	
 	private static void getRules() {
 
-		// Load database into memory
 		Database database = new Database(); 
 		try {
 			database.loadFile(INPUT_DATA_FILENAME);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} 
 		
@@ -154,7 +152,6 @@ public class TopKAnalyzer {
     private static String translateIPAddresses(String ipIndexesString) {
     	String ipAddresses = "";
 
-		System.out.println(ipIndexesString);
     	String[] ipIndexes = ipIndexesString.split(" ");
     	for(String ipIndexString : ipIndexes) {
     		int ipIndex = Integer.parseInt(ipIndexString);

@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.*;
 import java.nio.ByteBuffer;
+import java.util.Arrays;
 
 import topK.TopKAnalyzer;
 
@@ -73,11 +74,29 @@ public class UDPServer {
 			System.out.println("Total bytes received: " + totalBytesReceived + ". File path is: " + f.getAbsolutePath());
 			
 			String result = TopKAnalyzer.analyze(filename);
-			byte [] buf = result.getBytes();
-			DatagramPacket packet = new DatagramPacket(buf, buf.length, p.getAddress(), p.getPort());
-			server.send(packet);
-			
+			sendMessage(result, p.getAddress(), p.getPort());
 		}
+	}
+	
+	public void sendMessage(String message, InetAddress address, int port) throws IOException {
+		byte [] messageBytes = message.getBytes();
+		int packageCount = (messageBytes.length / MAX_BUFFER_SIZE) + 1;
+		for(int packageIndex = 0; packageIndex< packageCount; ++packageIndex) {
+			int startIndex = packageIndex * MAX_BUFFER_SIZE;
+			int endIndex = Math.min((packageIndex+1) * MAX_BUFFER_SIZE, messageBytes.length);
+			byte [] messageSegment = Arrays.copyOfRange(messageBytes, startIndex, endIndex);
+			DatagramPacket packet = new DatagramPacket(messageSegment, endIndex - startIndex, address, port);
+			server.send(packet);
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		messageBytes = "end".getBytes();
+		DatagramPacket packet = new DatagramPacket(messageBytes, messageBytes.length, address, port);
+		server.send(packet);
 	}
 	
 	public void send(DatagramPacket packetToSend) throws IOException {

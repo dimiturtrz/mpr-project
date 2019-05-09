@@ -25,7 +25,6 @@ public class UDPClient {
 		
 		UDPClient c = new UDPClient();
 		c.sendFile("logs_BCS37_20181103_UTF8.txt");
-		System.out.println("sent file");
 		try {
 			c.listen();
 		} catch(IOException ex) {}
@@ -65,18 +64,19 @@ public class UDPClient {
 	}
 	
 	public void listen() throws IOException {
-		byte[] buf = new byte[MAX_BUFFER_SIZE*2];
+		byte[] buf = new byte[MAX_BUFFER_SIZE];
 	
+		System.out.println("");
 		while(true) {            
 			DatagramPacket packet = new DatagramPacket(buf, buf.length);
 			client.receive(packet);
-			   
-			InetAddress address = packet.getAddress();
-			int port = packet.getPort();
-			packet = new DatagramPacket(buf, buf.length, address, port);
 			String received = new String(packet.getData(), 0, packet.getLength());
 			
-			System.out.println(received);
+			if(received.equals("end")) {
+				return;
+			}
+			
+			System.out.print(received);
         }
 	}
 	
